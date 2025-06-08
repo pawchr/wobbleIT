@@ -1,0 +1,39 @@
+### Symfony ###
+/var/
+/vendor/
+/.env.dev
+/.env
+/.env.local.php
+/config/secrets/dev/dev.decrypt.private.php
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/node_modules/
+npm-debug.log
+yarn-error.log
+.pnp.*
+.phpunit.result.cache
+/build/
+
+### Docker ###
+docker-compose.override.yml
+docker/db-data/
+docker/nginx/conf.d/*.log
+docker/*.pid
+*.log
+*.pid
+
+### IDEs / Editors ###
+.vscode/
+.idea/
+*.swp
+*~
+
+### OS-specific ###
+.DS_Store
+Thumbs.db
+
+### Misc ###
+.env.test.local
+.env.dev.local
+.env.prod.local
+/.php-cs-fixer.cache
