@@ -61,13 +61,13 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
-        $id = $request->query->get('id');
+        $email = $request->query->get('email');
 
-        if (null === $id) {
+        if (null === $email) {
             return $this->redirectToRoute('app_register');
         }
 
-        $user = $userRepository->find($id);
+        $user = $userRepository->find($email);
 
         if (null === $user) {
             return $this->redirectToRoute('app_register');
