@@ -6,7 +6,9 @@ use App\Entity\User;
 use App\Form\RegistrationForm;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\AST\Functions\CurrentDateFunction;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,9 +34,17 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
+            $name = $form->get('name')->getData();
+            $surname = $form->get('surname')->getData();
+            $birth_date = $form->get('birth_date')->getData();
 
             // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $user->setPassword($plainPassword);
+            $user->setName($name);
+            $user->setSurname($surname);
+            $user->setRoles(['ROLE_USER']);
+            $user->setBirthDate($birth_date);
+            $user->setCreatedAt(new \DateTimeImmutable());
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -50,7 +60,7 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('_preview_error');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [

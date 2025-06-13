@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -11,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class RegistrationForm extends AbstractType
 {
@@ -18,6 +20,17 @@ class RegistrationForm extends AbstractType
     {
         $builder
             ->add('email')
+            ->add('name')
+            ->add('surname')
+            ->add('birth_date', DateType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'label' => 'Date of Birth',
+                'required' => true,
+                'attr' => [
+                    'max' => (new \DateTime())->format('Y-m-d'),
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
