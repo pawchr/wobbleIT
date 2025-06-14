@@ -37,3 +37,8 @@ Thumbs.db
 .env.dev.local
 .env.prod.local
 /.php-cs-fixer.cache
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
