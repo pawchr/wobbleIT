@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class RegistrationForm extends AbstractType
 {
@@ -29,14 +31,6 @@ class RegistrationForm extends AbstractType
                 'required' => true,
                 'attr' => [
                     'max' => (new \DateTime())->format('Y-m-d'),
-                ],
-            ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
@@ -56,6 +50,30 @@ class RegistrationForm extends AbstractType
                     ]),
                 ],
             ])
+            ->add('confirmPassword', PasswordType::class, [
+                'mapped' => false,
+                'label' => 'Confirm Password',
+                'constraints' => [
+                    new NotBlank(['message' => 'Please confirm your password']),
+                ],
+            ])
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You should agree to our terms.',
+                    ]),
+                ],
+            ]);
+                $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                $password = $form->get('plainPassword')->getData();
+                $confirmPassword = $form->get('confirmPassword')->getData();
+
+                if ($password !== $confirmPassword) {
+                    $form->get('confirmPassword')->addError(new \Symfony\Component\Form\FormError('Passwords do not match.'));
+                }
+            });
         ;
     }
 
