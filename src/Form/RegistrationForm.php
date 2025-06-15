@@ -18,53 +18,58 @@ use Symfony\Component\Form\FormEvents;
 
 class RegistrationForm extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('email')
-            ->add('name')
-            ->add('surname')
-            ->add('birth_date', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => true,
-                'label' => 'Date of Birth',
-                'required' => true,
-                'attr' => [
-                    'max' => (new \DateTime())->format('Y-m-d'),
-                ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
-            ->add('confirmPassword', PasswordType::class, [
-                'mapped' => false,
-                'label' => 'Confirm Password',
-                'constraints' => [
-                    new NotBlank(['message' => 'Please confirm your password']),
-                ],
-            ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
-            ]);
+public function buildForm(FormBuilderInterface $builder, array $options): void
+{
+    $builder
+        ->add('email', null, [
+            'label' => false,
+        ])
+        ->add('name', null, [
+            'label' => false,
+        ])
+        ->add('surname', null, [
+            'label' => false,
+        ])
+        ->add('birth_date', DateType::class, [
+            'widget' => 'single_text',
+            'html5' => true,
+            'label' => false,
+            'required' => true,
+            'attr' => [
+                'max' => (new \DateTime())->format('Y-m-d'),
+            ],
+        ])
+        ->add('plainPassword', PasswordType::class, [
+            'mapped' => false,
+            'label' => false,
+            'attr' => ['autocomplete' => 'new-password'],
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Please enter a password',
+                ]),
+                new Length([
+                    'min' => 6,
+                    'minMessage' => 'Your password should be at least {{ limit }} characters',
+                    'max' => 4096,
+                ]),
+            ],
+        ])
+        ->add('confirmPassword', PasswordType::class, [
+            'mapped' => false,
+            'label' => false,
+            'constraints' => [
+                new NotBlank(['message' => 'Please confirm your password']),
+            ],
+        ])
+        ->add('agreeTerms', CheckboxType::class, [
+            'mapped' => false,
+            'label' => 'I accept the Terms of Service, the AUP and Privacy Policy',
+            'constraints' => [
+                new IsTrue([
+                    'message' => 'You should agree to our terms.',
+                ]),
+            ],
+        ]);
                 $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
                 $password = $form->get('plainPassword')->getData();

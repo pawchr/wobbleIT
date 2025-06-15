@@ -7,21 +7,39 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
+{% block navbar %}{% endblock %}
+ 
+<div class="max-w-sm mx-auto bg-opacity-90 p-8 rounded-2xl shadow-md">
+    {# <img src="{{ asset('images/logo.png') }}" alt="Logo"> #}
+    <h2 class="text-2xl font-semibold text-dark mb-6">Register</h2>
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.surname) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.confirmPassword) }}
-        {{ form_row(registrationForm.birth_date) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
+        <div class="space-y-4">
+            {{ form_row(registrationForm.email, {
+                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Email'},
+            }) }}
+            {{ form_row(registrationForm.plainPassword, {
+                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Password'},
+            }) }}
+            {{ form_row(registrationForm.confirmPassword, {
+                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Confirm password'},
+            }) }}
+            {{ form_row(registrationForm.name, {
+                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Name'},
+            }) }}
+            {{ form_row(registrationForm.surname, {
+                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Surname'},
+            }) }}
+            {{ form_row(registrationForm.birth_date, {
+                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Birth Date'},
+            }) }}
+            {{ form_row(registrationForm.agreeTerms, {
+                attr: { class: ''},
+            }) }}
+            <button type="submit"
+                class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
+                Register
+            </button>
+        </div>
     {{ form_end(registrationForm) }}
 {% endblock %}
