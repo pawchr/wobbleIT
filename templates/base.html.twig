@@ -8,23 +8,17 @@
 </head>
 <body class="bg-light text-base font-sans">
 
-    <header class="bg-dark text-light py-4 shadow-md">
-        <div class="container mx-auto flex justify-between items-center px-4">
-            <h1 class="text-xl font-bold tracking-wide">wobbleIT</h1>
-            <nav class="space-x-4">
-                <a href="{{ path('app_login') }}" class="hover:text-primary">Login</a>
-                <a href="{{ path('app_register') }}" class="hover:text-primary">Register</a>
-            </nav>
-        </div>
-    </header>
+    {% block navbar %}
+        {% include 'partials/navbar.html.twig' %}
+    {% endblock %}
 
     <main class="container mx-auto px-4 py-10">
         {% block body %}{% endblock %}
     </main>
 
-    <footer class="bg-dark text-muted text-center text-sm py-4 mt-10">
-        &copy; {{ "now"|date("Y") }} wobbleIT, All rights reserved 
-    </footer>
+    {% block footer %}
+        {% include 'partials/footer.html.twig' %}
+    {% endblock %}
 
     {% block javascripts %}{% block importmap %}{{ importmap('app') }}{% endblock %}{% endblock %}
 </body>
