@@ -5,11 +5,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#E4572E',
+        orange: '#E4572E',
         dark: '#171A21',
-        light: '#CBBFBB',
-        muted: '#736F4E',
-        base: '#3B3923',
+        silver: '#CBBFBB',
+        lightgreen: '#736F4E',
+        darkgreen: '#3B3923',
       },
       borderRadius: {
         xl: '1rem',
