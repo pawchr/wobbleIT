@@ -37,6 +37,7 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
             'required' => true,
             'attr' => [
                 'max' => (new \DateTime())->format('Y-m-d'),
+                'placeholder' => 'Birth date',
             ],
         ])
         ->add('plainPassword', PasswordType::class, [
@@ -64,6 +65,9 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
         ->add('agreeTerms', CheckboxType::class, [
             'mapped' => false,
             'label' => 'I accept the Terms of Service, the AUP and Privacy Policy',
+            'label_attr' => [
+                'class' => 'text-darkgreen',
+            ],
             'constraints' => [
                 new IsTrue([
                     'message' => 'You should agree to our terms.',

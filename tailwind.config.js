@@ -10,11 +10,13 @@ module.exports = {
         silver: '#CBBFBB',
         lightgreen: '#736F4E',
         darkgreen: '#3B3923',
+        textgrey: '#737373',
       },
       borderRadius: {
         xl: '1rem',
         '2xl': '1.25rem',
       },
+
     },
   },
   plugins: [],
