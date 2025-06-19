@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CatchController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code>/app/src/Controller/CatchController.php</code></li>
+        <li>Your template at <code>/app/templates/catch/new.html.twig</code></li>
+    </ul>
+</div>
+
+<div id="map" style="width: 100%; height: 500px;"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlwAiXH8BiLChGCJSXYtfIlIukZIUZeS4"></script>
+<script>
+      var src = 'http://localhost/locations.kml';
+
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 10,
+      center: { lat: 52.2297, lng: 21.0122 }, // przykładowe centrum Warszawy
+    });
+  
+    var kmlLayer = new google.maps.KmlLayer(src, {
+        suppressInfoWindows: true,
+        preserveViewport: false,
+        map: map
+    });
+
+    console.log(kmlLayer);
+    // Obsługa kliknięć na warstwie KML
+    kmlLayer.addListener('click', function(event) {
+      const placemark = event.featureData;
+      console.log('Kliknięto punkt:', placemark.name, placemark.description, event.latLng.toString());
+      alert(`Wybrano punkt: ${placemark.name} \nOpis: ${placemark.description} \nPozycja: ${event.latLng.toUrlValue()}`);
+    });
+  }
+
+  window.onload = initMap;
+</script>
+{% endblock %}
