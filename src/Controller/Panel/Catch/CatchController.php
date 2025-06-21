@@ -5,50 +5,75 @@ namespace App\Controller\Panel\Catch;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\CatchLocation;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 final class CatchController extends AbstractController
 {
-/*         #[Route('/api/locations', name: 'api_locations')]
-    public function locations(LocationRepository $repo): JsonResponse
+
+    #[Route('/api/location/create', name: 'api_location_create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ): JsonResponse
     {
-        $locations = $repo->findAll();
+    $data = json_decode($request->getContent(), true);
 
-        $data = array_map(fn($loc) => [
-            'id' => $loc->getId(),
-            'name' => $loc->getName(),
-            'district' => $loc->getDistrict(),
-            'lat' => $loc->getLatitude(),   // musisz mieć latitude/longitude w tabeli!
-            'lng' => $loc->getLongitude(),
-        ], $locations);
+        if (!isset($data['name'], $data['lat'], $data['lng'])) {
+            return new JsonResponse(['error' => 'Brakuje danych.'], 400);
+        }
 
-        return $this->json($data);
-    } */
+        try {
+            $location = new CatchLocation();
+            $location->setName($data['name']);
+            $location->setLat((float) $data['lat']);
+            $location->setLng((float) $data['lng']);
 
-    #[Route('/catch/new', name: 'app_catch_new')]
-    public function new(): Response
-    {
-/*         $catch = new Catch();
-        $catch->setStartedAt(new \DateTimeImmutable());
-        $catch->setActive(true);
-        $catch->setUser($this->getUser());
-
-        $form = $this->createForm(CatchType::class, $catch);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($catch);
+            $em->persist($location);
             $em->flush();
 
-            return $this->redirectToRoute('app_panel_catch_show', [
-                'id' => $catch->getId(),
+            return $this->json([
+                'id' => $location->getId(),
+                'name' => $location->getName(),
+                'lat' => $location->getLat(),
+                'lng' => $location->getLng(),
             ]);
-        } */
-        return $this->render('panel/catch/new.html.twig', [
-            'controller_name' => 'CatchController',
-        ]);
-        return $this->render('panel/catch/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        } catch (\Throwable $e) {
+            return new JsonResponse([
+                'error' => 'Błąd: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
+    #[Route('/catch/new', name: 'app_catch_new')]
+    public function new(
+        ParameterBagInterface $params,
+        Request $request,
+        FormFactoryInterface $formFactory
+    ): Response {
+        $form = $formFactory->createBuilder()
+            ->add('name', TextType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'Podaj nazwę łowiska'],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Zapisz'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            // tu możesz coś zrobić z $data['name']
+        }
+
+        return $this->render('panel/catch/new.html.twig', [
+            'form' => $form->createView(),
+            'google_maps_key' => $params->get('google_maps_key'),
+            'google_drive_key' => $params->get('google_drive_key'),
+            'locations_file_id' => $params->get('locations_file_id'),
+        ]);
+    }
 }

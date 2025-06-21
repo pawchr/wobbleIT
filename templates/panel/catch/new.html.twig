@@ -3,48 +3,53 @@
 {% block title %}Hello CatchController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/app/src/Controller/CatchController.php</code></li>
-        <li>Your template at <code>/app/templates/catch/new.html.twig</code></li>
-    </ul>
-</div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}"></script>
 
 <div id="map" style="width: 100%; height: 500px;"></div>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlwAiXH8BiLChGCJSXYtfIlIukZIUZeS4"></script>
+<input id="location_name"/>
 <script>
-      var src = 'http://localhost/locations.kml';
+  const src = 'https://www.googleapis.com/drive/v3/files/{{ locations_file_id }}?alt=media&key={{ google_drive_key }}';
 
   function initMap() {
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 10,
-      center: { lat: 52.2297, lng: 21.0122 }, // przykładowe centrum Warszawy
-    });
-  
-    var kmlLayer = new google.maps.KmlLayer(src, {
-        suppressInfoWindows: true,
-        preserveViewport: false,
-        map: map
+      center: { lat: 50.8584, lng: 18.8801 }, // środek mapy - Częstochowa
     });
 
-    console.log(kmlLayer);
-    // Obsługa kliknięć na warstwie KML
+    const kmlLayer = new google.maps.KmlLayer(src, {
+      suppressInfoWindows: false,
+      preserveViewport: false,
+      map: map
+    });
+
+    kmlLayer.addListener("click", function(event) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      const name = event.featureData.name;
+
+      fetch("/api/location/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify({ name, lat, lng })
+      })
+        .then(res => res.json())
+        .catch(err => {
+          console.error("Błąd przy zapisie:", err);
+          alert("Nie udało się zapisać lokalizacji.");
+        });
+    });
+
     kmlLayer.addListener('click', function(event) {
       const placemark = event.featureData;
-      console.log('Kliknięto punkt:', placemark.name, placemark.description, event.latLng.toString());
-      alert(`Wybrano punkt: ${placemark.name} \nOpis: ${placemark.description} \nPozycja: ${event.latLng.toUrlValue()}`);
+      console.log('Kliknięto punkt KML:', placemark.name, placemark.description);
     });
   }
 
   window.onload = initMap;
 </script>
+
 {% endblock %}
