@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\CatchLocation;
+use App\Entity\Fishing;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CatchLocation>
+ * @extends ServiceEntityRepository<Fishing>
  */
-class CatchLocationRepository extends ServiceEntityRepository
+class FishingRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CatchLocation::class);
+        parent::__construct($registry, Fishing::class);
     }
 
     //    /**
-    //     * @return CatchLocation[] Returns an array of CatchLocation objects
+    //     * @return Fishing[] Returns an array of Fishing objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
+    //            ->orderBy('f.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?CatchLocation
+    //    public function findOneBySomeField($value): ?Fishing
     //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

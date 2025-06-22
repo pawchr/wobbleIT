@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello fishing!{% endblock %}
+
+{% block body %}
+    {{ form_start(fishingForm) }}
+        <div class="space-y-4">
+          {{ form_row(fishingForm.location_name, {
+              attr: { 
+                  id: 'location_name',
+                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  placeholder: 'Location Name'
+              },
+          }) }}
+          {{ form_row(fishingForm.coords, {
+              attr: { 
+                  id: 'coords',
+                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  placeholder: 'Coordinates'
+              },
+          }) }}
+            <button type="submit"
+                class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
+                wobble IT!
+            </button>
+        </div>
+    {{ form_end(fishingForm) }}
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}"></script>
+
+<div id="map" style="width: 100%; height: 500px;"></div>
+<script>
+  const src = 'https://www.googleapis.com/drive/v3/files/{{ locations_file_id }}?alt=media&key={{ google_drive_key }}';
+
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 10,
+      center: { lat: 50.8584, lng: 18.8801 },
+    });
+
+    const kmlLayer = new google.maps.KmlLayer(src, {
+      suppressInfoWindows: false,
+      preserveViewport: false,
+      map: map
+    });
+
+    kmlLayer.addListener("click", function(event) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      const name = event.featureData.name;
+      console.log(lat);
+      console.log(lng);
+      console.log(name);
+
+      // Wypełnij pola formularza
+      document.querySelector('#form_location_name').value = name;
+      document.querySelector('#form_coords').value = JSON.stringify({ lat, lng });
+    });
+
+    kmlLayer.addListener('click', function(event) {
+      const placemark = event.featureData;
+      console.log('Kliknięto punkt KML:', placemark.name, placemark.description);
+    });
+  }
+
+  window.onload = initMap;
+</script>
+
+
+{% endblock %}
