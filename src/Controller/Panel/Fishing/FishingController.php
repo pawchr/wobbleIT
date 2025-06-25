@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Fishing;
-use Doctrine\DBAL\Types\JsonType;
-use Doctrine\DBAL\Types\SimpleArrayType;
 
 final class FishingController extends AbstractController
 {
@@ -24,7 +22,7 @@ final class FishingController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $user = $this->getUser();
 
-        if (!isset($data['name'], $data['lat'], $data['lng'])) {
+        if (!isset($data['name'])) {
             return new JsonResponse(['error' => 'Brakuje danych.'], 400);
         }
 
@@ -34,10 +32,6 @@ final class FishingController extends AbstractController
 
             $fishing->setUserId((int)$userId);
             $fishing->setLocationName((string) $data['name']);
-            $fishing->setCoords([
-                'lat' => 51.15523,
-                'lng' => 18.99536,
-            ]);
             $fishing->setStartedAt(new \DateTimeImmutable());
             $fishing->setActive(1);
 
@@ -47,7 +41,6 @@ final class FishingController extends AbstractController
             return $this->json([
                 'id' => $fishing->getId(),
                 'name' => $fishing->getLocationName(),
-                'coords' => $fishing->getCoords(),
             ]);
         } catch (\Throwable $e) {
             return new JsonResponse([
@@ -60,16 +53,13 @@ final class FishingController extends AbstractController
     public function new(
         ParameterBagInterface $params,
         Request $request,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        EntityManagerInterface $em
     ): Response {
         $form = $formFactory->createBuilder()
             ->add('location_name', TextType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'Location name'],
-            ])
-            ->add('coords', TextType::class, [
-                'label' => false,
-                'attr' => ['placeholder' => 'Location coordinates'],
             ])
             ->getForm();
 
@@ -77,8 +67,19 @@ final class FishingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            // tu możesz coś zrobić z $data['name']
-            var_dump($data['name']);
+            $user = $this->getUser();
+
+            $fishing = new Fishing();
+            $userId = $user->getUserIdentifier();
+
+            $fishing->setUserId((int)$userId);
+            $fishing->setLocationName((string) $data['location_name']);
+            $fishing->setStartedAt(new \DateTimeImmutable());
+            $fishing->setActive(1);
+
+            $em->persist($fishing);
+            $em->flush();
+
         }
 
         return $this->render('panel/fishing/new.html.twig', [
