@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\FishingRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FishingRepository::class)]
@@ -25,9 +24,6 @@ class Fishing
 
     #[ORM\Column(length: 255)]
     private ?string $location_name = null;
-
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $coords = [];
 
     #[ORM\Column]
     private ?bool $active = null;
@@ -81,18 +77,6 @@ class Fishing
     public function setLocationName(string $location_name): static
     {
         $this->location_name = $location_name;
-
-        return $this;
-    }
-
-    public function getCoords(): array
-    {
-        return $this->coords;
-    }
-
-    public function setCoords(array $coords): static
-    {
-        $this->coords = $coords;
 
         return $this;
     }

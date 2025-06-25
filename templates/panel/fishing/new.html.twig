@@ -12,13 +12,6 @@
                   placeholder: 'Location Name'
               },
           }) }}
-          {{ form_row(fishingForm.coords, {
-              attr: { 
-                  id: 'coords',
-                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
-                  placeholder: 'Coordinates'
-              },
-          }) }}
             <button type="submit"
                 class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
                 wobble IT!
@@ -45,16 +38,10 @@
     });
 
     kmlLayer.addListener("click", function(event) {
-      const lat = event.latLng.lat();
-      const lng = event.latLng.lng();
       const name = event.featureData.name;
-      console.log(lat);
-      console.log(lng);
       console.log(name);
 
-      // Wypełnij pola formularza
       document.querySelector('#form_location_name').value = name;
-      document.querySelector('#form_coords').value = JSON.stringify({ lat, lng });
     });
 
     kmlLayer.addListener('click', function(event) {
