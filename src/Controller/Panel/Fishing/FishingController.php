@@ -79,7 +79,7 @@ final class FishingController extends AbstractController
 
             $em->persist($fishing);
             $em->flush();
-
+            return $this->redirectToRoute('app_panel');
         }
 
         return $this->render('panel/fishing/new.html.twig', [
