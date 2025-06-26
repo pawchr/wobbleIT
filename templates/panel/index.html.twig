@@ -7,9 +7,16 @@
     <h1 class="text-3xl font-semibold mb-6">Witaj, {{ user.email }}!</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        {% if activeFishing %}
         {% set cards = [
-            { title: "🎣 Add new fishing", description: "Add new fishing", route: "/fishing/new"},
+            { title: "🎣 Add new fish", description: "Got some?", route: "/fish/add"},
         ] %}
+        {% else %}        
+        {% set cards = [
+            { title: "🎣 Start your fishing!", description: "and add your location", route: "/fishing/new"},
+        ] %}
+        {% endif %}
 
         {% for card in cards %}
             <a href={{card.route}} class="block p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow hover:shadow-md transition">

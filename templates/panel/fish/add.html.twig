@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello fishing!{% endblock %}
+
+{% block body %}
+    {{ form_start(addFishForm) }}
+        <div class="space-y-4">
+          {{ form_row(addFishForm.species_id, {
+              attr: { 
+                  id: 'species_id',
+                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  placeholder: 'Species'
+              },
+          }) }}
+          {{ form_row(addFishForm.length, {
+              attr: { 
+                  id: 'length',
+                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  placeholder: 'Length'
+              },
+          }) }}
+            <button type="submit"
+                class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
+                wobble IT!
+            </button>
+        </div>
+    {{ form_end(addFishForm) }}
+
+{% endblock %}
