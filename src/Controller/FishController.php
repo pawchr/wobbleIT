@@ -7,11 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Fish;
+use App\Entity\FishSpecies;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Fishing;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 final class FishController extends AbstractController
 {
@@ -22,9 +23,13 @@ final class FishController extends AbstractController
         EntityManagerInterface $em
     ) : Response {
             $form = $formFactory->createBuilder()
-            ->add('species_id', TextType::class, [
+
+            ->add('species', EntityType::class, [
+                'class' => FishSpecies::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choose species',
                 'label' => false,
-                'attr' => ['placeholder' => 'Species'],
+                'required' => true,
             ])
             ->add('length', NumberType::class, [
                 'label' => false,
@@ -47,7 +52,7 @@ final class FishController extends AbstractController
 
             $fish->setFishing($activeFishing);
             $fish->setLength((float)$data['length']);
-            $fish->setSpeciesId((int)$data['species_id']);
+            $fish->setSpecies($data['species']);
 
             $em->persist($fish);
             $em->flush();

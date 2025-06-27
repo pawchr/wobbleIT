@@ -18,8 +18,9 @@ class Fish
     #[ORM\JoinColumn(nullable: false)]
     private ?Fishing $fishing = null;
 
-    #[ORM\Column]
-    private ?int $species_id = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?FishSpecies $species = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     private ?string $length = null;
@@ -41,14 +42,14 @@ class Fish
         return $this;
     }
 
-    public function getSpeciesId(): ?int
+    public function getSpecies(): ?FishSpecies
     {
-        return $this->species_id;
+        return $this->species;
     }
 
-    public function setSpeciesId(int $species_id): static
+    public function setSpecies(?FishSpecies $species): static
     {
-        $this->species_id = $species_id;
+        $this->species = $species;
         return $this;
     }
 
