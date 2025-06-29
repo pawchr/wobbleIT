@@ -4,6 +4,11 @@
 
 {% block body %}
     {{ form_start(addFishForm) }}
+        {% if addFishForm.vars.errors|length %}
+            <div class="alert alert-danger">
+                {{ form_errors(addFishForm) }}
+            </div>
+        {% endif %}
         <div class="space-y-4">
           {{ form_row(addFishForm.species, {
               attr: { 
