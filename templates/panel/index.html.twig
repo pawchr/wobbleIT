@@ -4,13 +4,14 @@
 
 {% block body %}
 <div class="max-w-6xl mx-auto p-6">
-    <h1 class="text-3xl font-semibold mb-6">Witaj, {{ user.email }}!</h1>
+    <h1 class="text-3xl font-semibold mb-6">Welcome, {{ user.email }}!</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
         {% if activeFishing %}
         {% set cards = [
             { title: "🎣 Add new fish", description: "Got some?", route: "/fish/add"},
+            { title: "🎣 End fishing", description: "Got tired?", route: "/fishing/end"},
         ] %}
         {% else %}        
         {% set cards = [
