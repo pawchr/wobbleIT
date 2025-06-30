@@ -6,20 +6,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {% block stylesheets %}{% endblock %}
 </head>
-<body class="bg-white text-base font-sans flex flex-col h-screen justify-between">
-
-    {% block navbar %}
-        {% include 'partials/navbar.html.twig' %}
+<body class="font-inter antialiased bg-greybg text-gray-600 sidebar-expanded">
+    <div id="root">
+    <div class="flex h-screen overflow-hidden">
+    {% block sidebar %}
+        {% include 'partials/sidebar.html.twig' %}
     {% endblock %}
-
-    <main class="mb-auto container mx-auto px-4 py-10">
-        {% block body %}{% endblock %}
-    </main>
-
-    {% block footer %}
-        {% include 'partials/footer.html.twig' %}
-    {% endblock %}
+    <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        {% block header %}
+            {% include 'partials/header.html.twig' %}
+        {% endblock %}
+        <main class="mb-auto container mx-auto px-4 py-10">
+            {% block body %}{% endblock %}
+        </main>
+    </div>
 
     {% block javascripts %}{% block importmap %}{{ importmap('app') }}{% endblock %}{% endblock %}
+    </div>
+    </div>
 </body>
 </html>
