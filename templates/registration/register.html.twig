@@ -1,43 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block header %}{% endblock %}
 
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-{% block navbar %}{% endblock %}
- 
-<div class="max-w-sm mx-auto bg-opacity-90 p-8 rounded-2xl shadow-md shadow-lightgreen">
-    {# <img src="{{ asset('images/logo.png') }}" alt="Logo"> #}
-    <h2 class="text-2xl font-semibold text-dark mb-6">Register</h2>
-
+<div class="max-w-md m-auto bg-white p-12 rounded-2xl shadow-md">
     {{ form_start(registrationForm) }}
         <div class="space-y-4">
+        <img class="w-[160px] h-[40px] place-self-center mb-10" src="{{ asset('images/wobbleit-logo-transparent.png') }}" alt="logo"/>
             {{ form_row(registrationForm.email, {
-                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Email'},
+                attr: { class: 'input-primary', placeholder: 'Email'},
             }) }}
             {{ form_row(registrationForm.plainPassword, {
-                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Password'},
+                attr: { class: 'input-primary', placeholder: 'Password'},
             }) }}
             {{ form_row(registrationForm.confirmPassword, {
-                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Confirm password'},
+                attr: { class: 'input-primary', placeholder: 'Confirm password'},
             }) }}
             {{ form_row(registrationForm.name, {
-                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Name'},
+                attr: { class: 'input-primary', placeholder: 'Name'},
             }) }}
             {{ form_row(registrationForm.surname, {
-                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Surname'},
+                attr: { class: 'input-primary', placeholder: 'Surname'},
             }) }}
             {{ form_row(registrationForm.birth_date, {
-                attr: { class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', placeholder: 'Birth Date'},
+                attr: { class: 'input-primary', placeholder: 'Birth Date'},
             }) }}
-            {{ form_row(registrationForm.agreeTerms, {
-                attr: { class: ''},
-            }) }}
+            <div class="flex items-center space-x-2">
+                <label class="relative flex items-center cursor-pointer">
+                    {{ form_widget(registrationForm.agreeTerms, {
+                        attr: {
+                            class: 'sr-only peer'
+                        }
+                    }) }}
+                    <div class="h-5 w-5 rounded border border-slate-300 flex items-center justify-center transition-all peer-checked:bg-slate-800 peer-checked:border-slate-800">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-3.5 w-3.5 text-white peer-checked:opacity-100 transition-opacity pointer-events-none"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-width="1">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </label>
+
+                {{ form_label(registrationForm.agreeTerms, null, {
+                    label_attr: {
+                        class: 'text-sm text-gray-700 cursor-pointer peer-checked:text-darkgreen'
+                    }
+                }) }}
+            </div>
+
+            {{ form_errors(registrationForm.agreeTerms) }}
             <button type="submit"
-                class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
+                class="btn-primary">
                 Register
             </button>
         </div>
