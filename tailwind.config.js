@@ -5,13 +5,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        orange: '#E4572E',
-        dark: '#171A21',
+        primarybg: '#e5e7eb',
+        alert: '#E4572E',
+        textsecondary: '#737373',
+        buttonprimary: '#3B3923',
+        accent:'#736F4E',
         silver: '#CBBFBB',
-        lightgreen: '#736F4E',
         darkgreen: '#3B3923',
-        textgrey: '#737373',
-        greybg: '#e5e7eb',
+        
       },
       borderRadius: {
         xl: '1rem',

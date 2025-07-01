@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {% block stylesheets %}{% endblock %}
 </head>
-<body class="font-inter antialiased bg-greybg text-gray-600 sidebar-expanded">
+<body class="font-inter antialiased bg-primarybg text-gray-600 sidebar-expanded">
     <div id="root">
     <div class="flex h-screen overflow-hidden">
     {% block sidebar %}
@@ -16,7 +16,7 @@
         {% block header %}
             {% include 'partials/header.html.twig' %}
         {% endblock %}
-        <main class="mb-auto container mx-auto px-4 py-10">
+        <main class="mb-auto container m-auto px-4 py-10">
             {% block body %}{% endblock %}
         </main>
     </div>
