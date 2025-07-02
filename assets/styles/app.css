@@ -5,3 +5,10 @@
 body {
     background-color: skyblue;
 }
+/* styles */
+.btn-primary {
+    @apply w-full bg-buttonprimary text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition mt-5 py-3;
+}
+.input-primary {
+    @apply w-full px-4 py-2 border rounded-md outline-none focus:border-accent text-textsecondary placeholder-gray-400 mb-4
+}

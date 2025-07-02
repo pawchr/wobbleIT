@@ -1,0 +1,11 @@
+    <sidebar class="min-w-fit bg-white rounded-r-lg">
+        <div class="flex flex-col w-[256px] p-4">
+            <img class="w-[150px] mb-10 pr-3"src="{{ asset('images/wobbleit-logo-transparent.png') }}" alt="logo"/>
+
+            <h1 class="text-xl font-bold tracking-wide">Pages</h1>
+            <nav class="space-x-4 flex flex-col">
+                <a href="{{ path('app_login') }}" class="hover:text-primary">Login</a>
+                <a href="{{ path('app_register') }}" class="hover:text-primary">Register</a>
+            </nav>
+        </div>
+    </sidebar>
