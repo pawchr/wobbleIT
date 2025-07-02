@@ -18,7 +18,10 @@ module.exports = {
         xl: '1rem',
         '2xl': '1.25rem',
       },
-
+      fontFamily: {
+        heading: ['Poppins', 'sans-serif'],
+        body: ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],

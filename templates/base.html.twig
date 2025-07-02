@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>{% block title %}App{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
-<body class="font-inter antialiased bg-primarybg text-gray-600 sidebar-expanded">
+<body class="antialiased font-body">
     <div id="root">
     <div class="flex h-screen overflow-hidden">
     {% block sidebar %}
