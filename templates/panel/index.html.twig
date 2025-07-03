@@ -4,8 +4,6 @@
 
 {% block body %}
 <div class="max-w-6xl mx-auto p-6">
-    <h1 class="text-3xl font-semibold mb-6">Welcome, {{ user.email }}!</h1>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
         {% if activeFishing %}
@@ -20,7 +18,7 @@
         {% endif %}
 
         {% for card in cards %}
-            <a href={{card.route}} class="block p-6 bg-white border border-zinc-200 rounded-2xl shadow hover:shadow-md transition">
+            <a href={{card.route}} class="card-primary">
                 <div class="text-xl font-medium mb-2">{{ card.title }}</div>
                 <p class="text-zinc-500 dark:text-zinc-400">{{ card.description }}</p>
             </a>
