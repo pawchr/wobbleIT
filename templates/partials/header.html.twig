@@ -1,6 +1,10 @@
     <header class="text-muted text-center text-sm px-4 font-medium text-gray-600">
     <div class="h-16 border-gray-200 flex justify-end items-center gap-3 border-b ">
         {% if app.user %}
+                {% if not app.user.isverified %}
+                    <span class="text-alert">Please visit email to verify your account!</span>
+                {% endif %}
+                <hr class="w-px h-6 bg-gray-200 border-none">
                 <a href="{{ path('app_logout') }}">Logout</a>
                 <hr class="w-px h-6 bg-gray-200 border-none">
                 <img src="{{ asset('images/initials.png' )}}" class="w-8 h-8 rounded-full"/>
