@@ -24,7 +24,7 @@ class FishValidator
                 'fishing' => $fishing
             ])
         );
-        var_dump($fishCount);
+        
         if ($length < $species->getMinLength()) {
             $errors[] = 'Your fish is too small, release it!';
         }
