@@ -4,16 +4,18 @@
 
 {% block body %}
     {{ form_start(fishingForm) }}
-        <div class="space-y-4">
+        <div class="card-primary">
           {{ form_row(fishingForm.location_name, {
               attr: { 
                   id: 'location_name',
-                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  class: 'input-primary', 
                   placeholder: 'Location Name'
               },
           }) }}
+            <div id="map" style="width: 100%; height: 500px;"></div>
+
             <button type="submit"
-                class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
+                class="btn-primary">
                 wobble IT!
             </button>
         </div>
@@ -21,7 +23,6 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}"></script>
 
-<div id="map" style="width: 100%; height: 500px;"></div>
 <script>
   const src = 'https://www.googleapis.com/drive/v3/files/{{ locations_file_id }}?alt=media&key={{ google_drive_key }}';
 
