@@ -9,23 +9,23 @@
                 {{ form_errors(addFishForm) }}
             </div>
         {% endif %}
-        <div class="space-y-4">
+        <div class="card-primary max-w-sm">
           {{ form_row(addFishForm.species, {
               attr: { 
                   id: 'species',
-                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  class: 'input-primary', 
                   placeholder: 'Species'
               },
           }) }}
           {{ form_row(addFishForm.length, {
               attr: { 
                   id: 'length',
-                  class: 'block w-full border-0 border-b border-gray-400 focus:darkgreen focus:outline-none focus:ring-0 pt-5', 
+                  class: 'input-primary', 
                   placeholder: 'Length'
               },
           }) }}
             <button type="submit"
-                class="w-full bg-darkgreen text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition">
+                class="btn-primary">
                 wobble IT!
             </button>
         </div>
