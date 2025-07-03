@@ -3,6 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-home:
+redirect_home:
     path: /
-    controller: App\Controller\PanelController::index
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: app_panel
+        permanent: true
