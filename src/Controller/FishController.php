@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
 
@@ -65,12 +66,40 @@ final class FishController extends AbstractController
                     $this->em->persist($fish);
                     $this->em->flush();
 
-                    return $this->redirectToRoute('app_panel');
+                    return $this->redirectToRoute('app_fishing_manage');
                 }
             }
 
         return $this->render('panel/fish/add.html.twig', [
             'addFishForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/fish/{id}/delete', name: 'app_fish_delete', methods: ['POST'])]
+    public function delete(Fish $fish, Request $request, EntityManagerInterface $em): RedirectResponse
+    {
+        //$fish = $em->getRepository(Fish::class)->find($id);
+
+        if (!$fish) {
+            $this->addFlash('danger', 'Fish not found.');
+            return $this->redirectToRoute('app_fishing_manage');
+        }
+
+            $form = $this->createFormBuilder()
+        ->setAction($this->generateUrl('app_fish_delete', ['id' => $fish->getId()]))
+        ->setMethod('POST')
+        ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->remove($fish);
+            $this->em->flush();
+
+            $this->addFlash('success', 'Fish deleted.');
+        }
+
+        return $this->redirectToRoute('app_fishing_manage');
+
     }
 }

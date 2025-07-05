@@ -36,7 +36,7 @@ class FishValidator
             $errors[] = 'This fish is currently protected, release it!';
         }
         
-        if ($fishCount >= $speciesLimit) {
+        if (($fishCount >= $speciesLimit) && $speciesLimit) {
             $errors[] = 'You have reached the limit, release it!';
         }
     

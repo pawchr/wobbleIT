@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Fishing;
+use App\Entity\Fish;
 use DateTime;
 
 final class FishingController extends AbstractController
@@ -71,6 +72,36 @@ final class FishingController extends AbstractController
 
         $activeFishing->setActive(false);
         $activeFishing->setEndedAt(new \DateTimeImmutable());
+
+        $this->em->persist($activeFishing);
+        $this->em->flush();
+        return $this->redirectToRoute('app_panel');
+    }
+
+    #[Route('/fishing/manage', name: 'app_fishing_manage')]
+    public function manage(Request $request){
+        
+        $activeFishing = $this->em->getRepository(Fishing::class)->findOneBy(['active' => true]);
+        if (!$activeFishing) {
+            $this->addFlash('warning', 'No active fishing session found.');
+            return $this->redirectToRoute('app_panel');
+        }
+        $allFish = $this->em->getRepository(Fish::class)->findBy(['fishing' => $activeFishing]);
+
+        $deleteForms = [];
+        foreach ($allFish as $fish) {
+        $deleteForms[$fish->getId()] = $this->createFormBuilder()
+            ->setAction($this->generateUrl('app_fish_delete', ['id' => $fish->getId()]))
+            ->setMethod('POST')
+            ->getForm()
+            ->createView();
+        }
+
+        return $this->render('panel/fishing/manage.html.twig', [
+            'allFish' => $allFish,
+            'deleteForms' => $deleteForms,
+        ]);
+
 
         $this->em->persist($activeFishing);
         $this->em->flush();
