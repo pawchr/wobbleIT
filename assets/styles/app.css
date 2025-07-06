@@ -20,3 +20,6 @@ body {
 .card-primary {
     @apply block p-6 bg-white border border-zinc-200 rounded-2xl shadow hover:shadow-md transition;
 }
+path{
+    @apply fill-current;
+}

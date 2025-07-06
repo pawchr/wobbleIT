@@ -11,8 +11,10 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Fishing;
-use DateTime;
+use App\Entity\Fish;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class FishingController extends AbstractController
 {
     public function __construct(
@@ -57,7 +59,7 @@ final class FishingController extends AbstractController
     }
 
     #[Route('/fishing/end', name: 'app_fishing_end')]
-    public function end(Request $request){
+    public function end(){
         $user = $this->getUser();
         if (!$user) {
             throw $this->createAccessDeniedException('You must be logged in to end fishing.');
@@ -71,6 +73,42 @@ final class FishingController extends AbstractController
 
         $activeFishing->setActive(false);
         $activeFishing->setEndedAt(new \DateTimeImmutable());
+
+        $this->em->persist($activeFishing);
+        $this->em->flush();
+        return $this->redirectToRoute('app_panel');
+    }
+
+    #[Route('/fishing/manage', name: 'app_fishing_manage')]
+    public function manage(){
+        
+        $user = $this->getUser();
+        $activeFishing = $this->em->getRepository(Fishing::class)->findOneBy([
+            'active' => 1,
+            'user_id' => $user
+        ]);
+
+        if (!$activeFishing) {
+            $this->addFlash('warning', 'No active fishing session found.');
+            return $this->redirectToRoute('app_panel');
+        }
+
+        $allFish = $this->em->getRepository(Fish::class)->findBy(['fishing' => $activeFishing]);
+
+        $deleteForms = [];
+        foreach ($allFish as $fish) {
+        $deleteForms[$fish->getId()] = $this->createFormBuilder()
+            ->setAction($this->generateUrl('app_fish_delete', ['id' => $fish->getId()]))
+            ->setMethod('POST')
+            ->getForm()
+            ->createView();
+        }
+
+        return $this->render('panel/fishing/manage.html.twig', [
+            'allFish' => $allFish,
+            'deleteForms' => $deleteForms,
+        ]);
+
 
         $this->em->persist($activeFishing);
         $this->em->flush();
