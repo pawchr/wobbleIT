@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
-{% block body %}
 
+
+{% block body %}
 <div>
     {% for fish in allFish %}
-        <div class="p-6 bg-white border border-zinc-200 rounded-2xl shadow hover:shadow-md transition flex justify-between font-medium text-gray-700">
+        <div class="p-5 mb-2 bg-white border border-zinc-200 rounded-2xl shadow hover:shadow-md transition flex justify-between font-medium text-gray-700">
             <span>{{ fish.species.name }}</span>
             <div class="flex gap-5">
                 <span>{{ fish.length }}</span>
                 <span class="text-alert content-center">
-                    {{ form_start(deleteForms[fish.id], {'attr': {'onsubmit': 'return confirm("Na pewno usunąć tę rybę?");'}}) }}
-                        <button class="btn btn-danger btn-sm">Usuń</button>
+                    {{ form_start(deleteForms[fish.id], 
+                        {'attr': {'onsubmit': 'return confirm("Are you sure you want to delete it?");', class: 'flex justify-center content-center' }}) }}
+                        <button class="content-center">{{ include('panel/fishing/bin-icon.svg') }}</button>
                     {{ form_end(deleteForms[fish.id]) }}
                 </span>
             </div>

@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\FishingRepository;
 
+#[IsGranted('ROLE_USER')]
 class PanelController extends AbstractController
 {
     #[Route('/panel', name: 'app_panel')]
-    #[IsGranted('ROLE_USER')]
     public function index(FishingRepository $fishingRepository): Response
     {
         $userId = $this->getUser()->getUserIdentifier();

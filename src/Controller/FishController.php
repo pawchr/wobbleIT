@@ -16,7 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class FishController extends AbstractController
 {
     public function __construct(
@@ -50,7 +52,11 @@ final class FishController extends AbstractController
                 $fish = new Fish();
                 $fish->setLength((float) $data['length']);
                 $fish->setSpecies($data['species']);
-                $activeFishing = $this->em->getRepository(Fishing::class)->findOneBy(['active' => true]);
+                $user = $this->getUser();
+                $activeFishing = $this->em->getRepository(Fishing::class)->findOneBy([
+                    'active' => 1,
+                    'user_id' => $user
+                ]);
                 $fish->setFishing($activeFishing);
                 
                 if (!$activeFishing) {
@@ -78,17 +84,16 @@ final class FishController extends AbstractController
     #[Route('/fish/{id}/delete', name: 'app_fish_delete', methods: ['POST'])]
     public function delete(Fish $fish, Request $request, EntityManagerInterface $em): RedirectResponse
     {
-        //$fish = $em->getRepository(Fish::class)->find($id);
 
         if (!$fish) {
             $this->addFlash('danger', 'Fish not found.');
             return $this->redirectToRoute('app_fishing_manage');
         }
 
-            $form = $this->createFormBuilder()
-        ->setAction($this->generateUrl('app_fish_delete', ['id' => $fish->getId()]))
-        ->setMethod('POST')
-        ->getForm();
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('app_fish_delete', ['id' => $fish->getId()]))
+            ->setMethod('POST')
+            ->getForm();
 
         $form->handleRequest($request);
 
