@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pogoda{% endblock %}
+
+{% block body %}
+    <div class="pb-6">   
+        <h1 class="text-gray-800 font-bold text-2xl">Weather API</h1>
+    </div>
+    <div class="p-6 bg-white border border-zinc-200 rounded-2xl shadow hover:shadow-md transition">
+        <div class=" flex justify-between border-gray-200 border-b pb-4">
+        <span class="text-xl font-medium content-center">{{ location }}</span>
+        <form method="get" class="flex">
+            <input class="w-full px-4 py-2 border rounded-l-md outline-none focus:border-accent text-textsecondary placeholder-gray-400" type="text" name="location" value="{{ location }}" />
+            <button class="btn-icon" type="submit">{{ include('panel/weather/search-icon.svg') }}</button>
+        </form>
+        </div>
+    </div>
+    {{dump(weatherData)}}
+{#     {% if weatherData %}
+        {% set day = weatherData.forecast.forecastday[0].day %}
+        {{dump(day)}}
+        <ul>
+            <li><strong>Data:</strong> {{ date }}</li>
+            <li><strong>Temperatura (avg):</strong> {{ day.avgtemp_c }} °C</li>
+            <li><strong>Wilgotność:</strong> {{ day.avghumidity }}%</li>
+            <li><strong>Wiatr:</strong> {{ day.maxwind_kph }} km/h</li>
+            <li><strong>Stan nieba:</strong> {{ day.condition.text }}</li>
+            <li><img src="https:{{ day.condition.icon }}" alt="weather icon" /></li>
+        </ul>
+    {% else %}
+        <p>The weather data could not be downloaded.</p>
+    {% endif %} #}
+{% endblock %}

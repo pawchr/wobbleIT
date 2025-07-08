@@ -7,6 +7,8 @@ parameters:
     google_maps_key: '%env(GOOGLE_MAPS_KEY)%'
     google_drive_key: '%env(GOOGLE_DRIVE_KEY)%'
     locations_file_id: '%env(LOCATIONS_FILE_ID)%'
+    weather_api_key: '%env(WEATHER_API_KEY)%'
+    weather_api_url: '%env(WEATHER_API_URL)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -20,3 +22,7 @@ services:
         exclude: '../src/{DependencyInjection,Entity,Tests,Kernel.php}'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\WeatherService:
+        arguments:
+            $weatherApiKey: '%weather_api_key%'
+            $weatherApiUrl: '%weather_api_url%'
